@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.blogRouter = void 0;
+const express_1 = require("express");
+const blog_controller_1 = require("./blog.controller");
+const multer_1 = require("../../middleware/multer");
+const CheckAuth_1 = require("../../middleware/CheckAuth");
+const router = (0, express_1.Router)();
+router.route("/").post((0, CheckAuth_1.checkAuth)(), multer_1.upload.single("thumbnail"), blog_controller_1.blogControllers.createBlog);
+router.route("/:id").get(blog_controller_1.blogControllers.getBlogById);
+router.route("/").get(blog_controller_1.blogControllers.getAllBlogs);
+exports.blogRouter = router;
