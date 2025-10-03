@@ -27,8 +27,9 @@ const logout = (0, catchAsync_1.asyncHandler)((req, res) => __awaiter(void 0, vo
         secure: true,
         sameSite: "none"
     });
-    (0, ApiResponse_1.ApiResponse)(res, true, http_status_codes_1.StatusCodes.OK, "Logout successful", {});
+    (0, ApiResponse_1.ApiResponse)(res, true, http_status_codes_1.StatusCodes.OK, "Admin logged out successfully", {});
 }));
 exports.authControllers = {
-    login
+    login,
+    logout
 };
