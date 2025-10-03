@@ -1,15 +1,3 @@
-/*
-
-Steps :-
-- Configure cloudinary, - done
-- use multer to upload the file in backend
-- take the file path and upload it on cloudinary - done
-- store the response file url from cloudinary to DB
-
-multer -> file -> localpath (server) -> upload -> cloudinary -> response url -> store in DB
-
- */
-
 import { Prisma } from "@prisma/client";
 import { AppError } from "../../utils/AppError";
 import { StatusCodes } from "http-status-codes";
@@ -21,6 +9,8 @@ const createBlog = async (payload: Omit<Prisma.BlogCreateInput, "thumbnail" | "o
         throw new AppError(StatusCodes.NOT_FOUND, "Required field is missing")
     }
 
+    const uniqueTitle = payload.title.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
+
     const res = await uploadToCloudinary(imgLocalPath)
 
     if (!res?.secure_url) {
@@ -30,6 +20,7 @@ const createBlog = async (payload: Omit<Prisma.BlogCreateInput, "thumbnail" | "o
     const blog = await prisma.blog.create({
         data: {
             title: payload.title,
+            uniqueTitle,
             content: payload.content,
             isFeatured: payload.isFeatured,
             tags: payload.tags,
