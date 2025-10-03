@@ -13,6 +13,16 @@ const login = asyncHandler(async (req: Request, res: Response) => {
     ApiResponse(res, true, StatusCodes.OK, "Admin logged in successfully", data)
 })
 
+const logout = asyncHandler(async (req: Request, res: Response) => {
+    res.clearCookie("accessToken", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none"
+    })
+    ApiResponse(res, true, StatusCodes.OK, "Admin logged out successfully", {})
+}) 
+
 export const authControllers = {
-    login
+    login,
+    logout
 }
