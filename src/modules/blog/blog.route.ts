@@ -6,7 +6,7 @@ import { checkAuth } from "../../middleware/CheckAuth";
 const router = Router()
 
 router.route("/").post(
-    checkAuth(),
+    // checkAuth(),
     upload.single("thumbnail"),
     blogControllers.createBlog
 )

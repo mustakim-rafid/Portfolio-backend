@@ -56,6 +56,14 @@ const getAllBlogs = async (isFeatured: boolean) => {
         },
         orderBy: {
             createdAt: "desc" 
+        },
+        include: {
+            owner: {
+                select: {
+                    id: true,
+                    name: true
+                }
+            }
         }
     })
 

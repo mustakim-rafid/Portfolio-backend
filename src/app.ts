@@ -4,6 +4,8 @@ import path from "path";
 import cookieParser from "cookie-parser";
 import { authRouter } from "./modules/auth/auth.route"
 import { blogRouter } from "./modules/blog/blog.route";
+import { aboutRouter } from "./modules/about/about.route";
+import { adminRouter } from "./modules/admin/admin.route";
 
 const app = express()
 
@@ -18,6 +20,8 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/blog", blogRouter)
+app.use("/api/v1/about", aboutRouter)
+app.use("/api/v1/admin", adminRouter)
 
 app.use(globarErrorHandler)
 
