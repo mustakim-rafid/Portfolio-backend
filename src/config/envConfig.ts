@@ -17,6 +17,7 @@ interface IEnvs {
     CLOUDINARY_API_KEY: string;
     CLOUDINARY_API_SECRET: string;
   };
+  FRONTEND_URL: String;
 }
 
 export const getEnvs = (): IEnvs => {
@@ -33,5 +34,6 @@ export const getEnvs = (): IEnvs => {
       CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY as string,
       CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET as string,
     },
+    FRONTEND_URL: process.env.FRONTEND_URL as string
   };
 };

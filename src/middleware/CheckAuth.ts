@@ -6,7 +6,7 @@ import { getEnvs } from "../config/envConfig";
 
 export const checkAuth = () => async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const accessToken = req.cookies.accessToken;
+      const accessToken = req.headers.authorization || req.cookies.accessToken;
       if (!accessToken) {
         throw new AppError(StatusCodes.NOT_FOUND, "Access token is missing");
       }

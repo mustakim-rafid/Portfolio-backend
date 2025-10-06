@@ -36,13 +36,18 @@ const createBlog = async (payload: Omit<Prisma.BlogCreateInput, "thumbnail" | "o
     return blog
 }
 
-const getBlogById = async (id: number) => {
+const getBlogByUniqueTitle = async (uniqueTitle: string) => {
     const blog = await prisma.blog.findUnique({
         where: {
-            id
+            uniqueTitle
         },
         include: {
-            owner: true
+            owner: {
+                select: {
+                    id: true,
+                    name: true
+                }
+            }
         }
     })
 
@@ -72,6 +77,6 @@ const getAllBlogs = async (isFeatured: boolean) => {
 
 export const blogServices = {
     createBlog,
-    getBlogById,
+    getBlogByUniqueTitle,
     getAllBlogs
 }

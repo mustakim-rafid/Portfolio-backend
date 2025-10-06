@@ -11,8 +11,8 @@ const createBlog = asyncHandler(async (req: Request, res: Response) => {
     ApiResponse(res, true, StatusCodes.CREATED, "Blog created successfully", blog)
 })
 
-const getBlogById = asyncHandler(async (req: Request, res: Response) => {
-    const blog = await blogServices.getBlogById(Number(req.params.id))
+const getBlogByUniqueTitle = asyncHandler(async (req: Request, res: Response) => {
+    const blog = await blogServices.getBlogByUniqueTitle(req.params.uniquetitle)
     ApiResponse(res, true, StatusCodes.OK, "Blog retrieved successfully", blog)
 })
 
@@ -24,6 +24,6 @@ const getAllBlogs = asyncHandler(async (req: Request, res: Response) => {
 
 export const blogControllers = {
     createBlog,
-    getBlogById,
+    getBlogByUniqueTitle,
     getAllBlogs
 }
