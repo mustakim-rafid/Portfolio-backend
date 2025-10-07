@@ -56,9 +56,7 @@ const getBlogByUniqueTitle = async (uniqueTitle: string) => {
 
 const getAllBlogs = async (isFeatured: boolean) => {
     const blogs = await prisma.blog.findMany({
-        where: {
-            isFeatured
-        },
+        where: isFeatured ? { isFeatured: true } : {},
         orderBy: {
             createdAt: "desc" 
         },
@@ -75,8 +73,21 @@ const getAllBlogs = async (isFeatured: boolean) => {
     return blogs
 }
 
+const deleteBlogById = async (id: number) => {
+    const blog = await prisma.blog.delete({
+        where: {
+            id
+        }
+    })
+
+    if(!blog) {
+        throw new AppError(StatusCodes.NOT_FOUND, "Blog deletion failed")
+    }
+}
+
 export const blogServices = {
     createBlog,
     getBlogByUniqueTitle,
-    getAllBlogs
+    getAllBlogs,
+    deleteBlogById
 }
