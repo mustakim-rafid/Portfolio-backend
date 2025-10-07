@@ -28,9 +28,16 @@ const deleteBlogById = asyncHandler(async (req: Request, res: Response) => {
     ApiResponse(res, true, StatusCodes.OK, "Blog deleted successfully", {})
 })
 
+const updateBlogById = asyncHandler(async (req: Request, res: Response) => {
+    const id = req.params.id
+    const blog = await blogServices.updateBlogById(Number(id), req.body)
+    ApiResponse(res, true, StatusCodes.OK, "Blog updated successfully", blog)
+})
+
 export const blogControllers = {
     createBlog,
     getBlogByUniqueTitle,
     getAllBlogs,
-    deleteBlogById
+    deleteBlogById,
+    updateBlogById
 }

@@ -85,9 +85,31 @@ const deleteBlogById = async (id: number) => {
     }
 }
 
+const updateBlogById = async (id: number, payload: Pick<Prisma.BlogCreateInput, "title" | "content">) => {
+    const uniqueTitle = payload.title.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
+
+    const blog = await prisma.blog.update({
+        where: {
+            id
+        },
+        data: {
+            title: payload.title,
+            uniqueTitle,
+            content: payload.content
+        }
+    })
+
+    if (!blog) {
+        throw new AppError(StatusCodes.NOT_FOUND, "Blog update failed")
+    }
+
+    return blog
+}
+
 export const blogServices = {
     createBlog,
     getBlogByUniqueTitle,
     getAllBlogs,
-    deleteBlogById
+    deleteBlogById,
+    updateBlogById
 }
