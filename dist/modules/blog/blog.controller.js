@@ -21,8 +21,8 @@ const createBlog = (0, catchAsync_1.asyncHandler)((req, res) => __awaiter(void 0
     const blog = yield blog_service_1.blogServices.createBlog(req.body, (_a = req.file) === null || _a === void 0 ? void 0 : _a.path);
     (0, ApiResponse_1.ApiResponse)(res, true, http_status_codes_1.StatusCodes.CREATED, "Blog created successfully", blog);
 }));
-const getBlogById = (0, catchAsync_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const blog = yield blog_service_1.blogServices.getBlogById(Number(req.params.id));
+const getBlogByUniqueTitle = (0, catchAsync_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const blog = yield blog_service_1.blogServices.getBlogByUniqueTitle(req.params.uniquetitle);
     (0, ApiResponse_1.ApiResponse)(res, true, http_status_codes_1.StatusCodes.OK, "Blog retrieved successfully", blog);
 }));
 const getAllBlogs = (0, catchAsync_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -30,8 +30,20 @@ const getAllBlogs = (0, catchAsync_1.asyncHandler)((req, res) => __awaiter(void 
     const blog = yield blog_service_1.blogServices.getAllBlogs(isFeatured);
     (0, ApiResponse_1.ApiResponse)(res, true, http_status_codes_1.StatusCodes.OK, "Blog retrieved successfully", blog);
 }));
+const deleteBlogById = (0, catchAsync_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    yield blog_service_1.blogServices.deleteBlogById(Number(id));
+    (0, ApiResponse_1.ApiResponse)(res, true, http_status_codes_1.StatusCodes.OK, "Blog deleted successfully", {});
+}));
+const updateBlogById = (0, catchAsync_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const blog = yield blog_service_1.blogServices.updateBlogById(Number(id), req.body);
+    (0, ApiResponse_1.ApiResponse)(res, true, http_status_codes_1.StatusCodes.OK, "Blog updated successfully", blog);
+}));
 exports.blogControllers = {
     createBlog,
-    getBlogById,
-    getAllBlogs
+    getBlogByUniqueTitle,
+    getAllBlogs,
+    deleteBlogById,
+    updateBlogById
 };

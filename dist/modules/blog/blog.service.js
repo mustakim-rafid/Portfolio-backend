@@ -40,30 +40,70 @@ const createBlog = (payload, imgLocalPath) => __awaiter(void 0, void 0, void 0, 
     });
     return blog;
 });
-const getBlogById = (id) => __awaiter(void 0, void 0, void 0, function* () {
+const getBlogByUniqueTitle = (uniqueTitle) => __awaiter(void 0, void 0, void 0, function* () {
     const blog = yield db_1.prisma.blog.findUnique({
         where: {
-            id
+            uniqueTitle
         },
         include: {
-            owner: true
+            owner: {
+                select: {
+                    id: true,
+                    name: true
+                }
+            }
         }
     });
     return blog;
 });
 const getAllBlogs = (isFeatured) => __awaiter(void 0, void 0, void 0, function* () {
     const blogs = yield db_1.prisma.blog.findMany({
-        where: {
-            isFeatured
-        },
+        where: isFeatured ? { isFeatured: true } : {},
         orderBy: {
             createdAt: "desc"
+        },
+        include: {
+            owner: {
+                select: {
+                    id: true,
+                    name: true
+                }
+            }
         }
     });
     return blogs;
 });
+const deleteBlogById = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const blog = yield db_1.prisma.blog.delete({
+        where: {
+            id
+        }
+    });
+    if (!blog) {
+        throw new AppError_1.AppError(http_status_codes_1.StatusCodes.NOT_FOUND, "Blog deletion failed");
+    }
+});
+const updateBlogById = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const uniqueTitle = payload.title.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
+    const blog = yield db_1.prisma.blog.update({
+        where: {
+            id
+        },
+        data: {
+            title: payload.title,
+            uniqueTitle,
+            content: payload.content
+        }
+    });
+    if (!blog) {
+        throw new AppError_1.AppError(http_status_codes_1.StatusCodes.NOT_FOUND, "Blog update failed");
+    }
+    return blog;
+});
 exports.blogServices = {
     createBlog,
-    getBlogById,
-    getAllBlogs
+    getBlogByUniqueTitle,
+    getAllBlogs,
+    deleteBlogById,
+    updateBlogById
 };

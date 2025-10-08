@@ -9,26 +9,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authControllers = void 0;
+exports.adminControllers = void 0;
 const catchAsync_1 = require("../../utils/catchAsync");
-const auth_service_1 = require("./auth.service");
+const db_1 = require("../../db");
 const ApiResponse_1 = require("../../utils/ApiResponse");
+const AppError_1 = require("../../utils/AppError");
 const http_status_codes_1 = require("http-status-codes");
-const setCookie_1 = require("../../utils/setCookie");
-const login = (0, catchAsync_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const data = yield auth_service_1.authServices.login(req.body);
-    (0, setCookie_1.setCookie)(res, data.accessToken);
-    (0, ApiResponse_1.ApiResponse)(res, true, http_status_codes_1.StatusCodes.OK, "Admin logged in successfully", data);
-}));
-const logout = (0, catchAsync_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.clearCookie("accessToken", {
-        httpOnly: true,
-        secure: true,
-        sameSite: "none"
+const getAdminDetails = (0, catchAsync_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = yield db_1.prisma.admin.findMany({
+        select: {
+            id: true,
+            name: true,
+            email: true
+        }
     });
-    (0, ApiResponse_1.ApiResponse)(res, true, http_status_codes_1.StatusCodes.OK, "Admin logged out successfully", {});
+    if (!data) {
+        throw new AppError_1.AppError(http_status_codes_1.StatusCodes.NOT_FOUND, "Admin data not found");
+    }
+    (0, ApiResponse_1.ApiResponse)(res, true, http_status_codes_1.StatusCodes.OK, "Admin retrieved successfully", data[0]);
 }));
-exports.authControllers = {
-    login,
-    logout
+exports.adminControllers = {
+    getAdminDetails
 };

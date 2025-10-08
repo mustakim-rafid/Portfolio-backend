@@ -9,26 +9,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authControllers = void 0;
+exports.projectControllers = void 0;
 const catchAsync_1 = require("../../utils/catchAsync");
-const auth_service_1 = require("./auth.service");
+const db_1 = require("../../db");
 const ApiResponse_1 = require("../../utils/ApiResponse");
 const http_status_codes_1 = require("http-status-codes");
-const setCookie_1 = require("../../utils/setCookie");
-const login = (0, catchAsync_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const data = yield auth_service_1.authServices.login(req.body);
-    (0, setCookie_1.setCookie)(res, data.accessToken);
-    (0, ApiResponse_1.ApiResponse)(res, true, http_status_codes_1.StatusCodes.OK, "Admin logged in successfully", data);
+const getAllProjects = (0, catchAsync_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const projects = yield db_1.prisma.project.findMany();
+    (0, ApiResponse_1.ApiResponse)(res, true, http_status_codes_1.StatusCodes.OK, "Projects retrieved successfully", projects);
 }));
-const logout = (0, catchAsync_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.clearCookie("accessToken", {
-        httpOnly: true,
-        secure: true,
-        sameSite: "none"
-    });
-    (0, ApiResponse_1.ApiResponse)(res, true, http_status_codes_1.StatusCodes.OK, "Admin logged out successfully", {});
-}));
-exports.authControllers = {
-    login,
-    logout
+exports.projectControllers = {
+    getAllProjects
 };

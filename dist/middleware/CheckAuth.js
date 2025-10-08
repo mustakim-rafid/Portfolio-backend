@@ -19,7 +19,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const envConfig_1 = require("../config/envConfig");
 const checkAuth = () => (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const accessToken = req.cookies.accessToken;
+        const accessToken = req.headers.authorization || req.cookies.accessToken;
         if (!accessToken) {
             throw new AppError_1.AppError(http_status_codes_1.StatusCodes.NOT_FOUND, "Access token is missing");
         }
