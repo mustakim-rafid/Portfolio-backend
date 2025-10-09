@@ -9,6 +9,6 @@ const router = (0, express_1.Router)();
 router.route("/").post((0, CheckAuth_1.checkAuth)(), multer_1.upload.single("thumbnail"), blog_controller_1.blogControllers.createBlog);
 router.route("/:uniquetitle").get(blog_controller_1.blogControllers.getBlogByUniqueTitle);
 router.route("/").get(blog_controller_1.blogControllers.getAllBlogs);
-router.route("/:id").delete((0, CheckAuth_1.checkAuth)(), blog_controller_1.blogControllers.deleteBlogById);
+router.route("/:id").delete(blog_controller_1.blogControllers.deleteBlogById);
 router.route("/:id").patch((0, CheckAuth_1.checkAuth)(), blog_controller_1.blogControllers.updateBlogById);
 exports.blogRouter = router;

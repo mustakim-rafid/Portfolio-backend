@@ -13,7 +13,7 @@ router.route("/").post(
 
 router.route("/:uniquetitle").get(blogControllers.getBlogByUniqueTitle)
 router.route("/").get(blogControllers.getAllBlogs)
-router.route("/:id").delete(checkAuth(), blogControllers.deleteBlogById)
+router.route("/:id").delete(blogControllers.deleteBlogById)
 router.route("/:id").patch(checkAuth(), blogControllers.updateBlogById)
 
 export const blogRouter = router
